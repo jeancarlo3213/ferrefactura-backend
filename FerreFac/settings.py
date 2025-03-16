@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q2jbwt046-6ys=aov%odfm4tw(q5t=4w&qq*#5-et&9nqp#f9k'
-
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'clave-segura-por-defecto')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+
 
 
 # Application definition
@@ -80,14 +80,16 @@ WSGI_APPLICATION = 'FerreFac.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'FerreteriaDB',  # Nombre exacto de la base de datos en Azure
-        'USER': 'adminferreteria',  # Usuario de la base de datos
-        'PASSWORD': 'Ferreteria2024!',  # Contraseña del usuario
-        'HOST': 'ferrecampesino.database.windows.net',  # Dirección del servidor en Azure
-        'PORT': '1433',  # Puerto predeterminado para SQL Server
+        'NAME': os.getenv('DB_NAME', 'FerreteriaDB'),
+        'USER': os.getenv('DB_USER', 'adminferreteria'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'Ferreteria2024!'),
+        'HOST': os.getenv('DB_HOST', 'ferrecampesino.database.windows.net'),
+        'PORT': os.getenv('DB_PORT', '1433'),
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
             'encrypt': True,
@@ -96,6 +98,7 @@ DATABASES = {
         },
     }
 }
+
 
 
 
@@ -147,4 +150,6 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/"
 
