@@ -1,0 +1,45 @@
+# ⛔ Ignorar archivos compilados de Python
+*.pyc
+__pycache__/
+
+# ⛔ Ignorar base de datos SQLite (si usas una localmente)
+*.sqlite3
+
+# ⛔ Ignorar configuración de entornos (credenciales, API keys)
+.env
+
+# ⛔ Ignorar configuraciones de editores de código
+.vscode/
+.idea/
+
+# ⛔ Ignorar dependencias de Node.js (para frontend)
+node_modules/
+
+# ⛔ Ignorar archivos de compilación del frontend (Vite, React)
+dist/
+build/
+.vite/
+.cache/
+
+# ⛔ Ignorar logs y archivos temporales
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ⛔ Ignorar archivos del backend de Django
+*.pyc
+db.sqlite3
+/media/  # Si usas almacenamiento de archivos
+
+# ⛔ Ignorar archivos de migraciones si no quieres subirlas
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# ⛔ Ignorar archivos de configuración de desarrollo
+.env.local
+.env.production
+.env.testing
