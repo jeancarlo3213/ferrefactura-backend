@@ -1,16 +1,19 @@
 [phases.setup]
 nixPkgs = [
     "python3",
+    "python311Packages.pip",  # Agregamos esta línea para instalar pip
     "postgresql_16",
     "libmysqlclient",
     "gcc",
-    "unixODBC"  # Eliminamos "unixODBC.dev"
+    "unixODBC"
 ]
 
 [phases.install]
 cmds = [
+    "python -m ensurepip",  # Asegura que pip esté disponible
     "python -m venv /opt/venv",
     ". /opt/venv/bin/activate",
+    "pip install --upgrade pip",  # Asegura que pip esté actualizado
     "pip install -r requirements.txt"
 ]
 
