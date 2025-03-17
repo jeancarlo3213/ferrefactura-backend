@@ -33,6 +33,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "web-production-2cef.up.railway.app").split(",")
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
