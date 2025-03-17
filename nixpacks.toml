@@ -9,12 +9,13 @@ nixPkgs = [
 
 [phases.install]
 cmds = [
-    "python3 -m venv /opt/venv",  # Crear entorno virtual
+    "python3 -m venv /opt/venv",
     ". /opt/venv/bin/activate",
-    "/opt/venv/bin/python -m ensurepip",  # Asegurar pip
-    "/opt/venv/bin/python -m pip install --upgrade pip",  # Actualizar pip
-    "/opt/venv/bin/pip install -r requirements.txt"
+    "/opt/venv/bin/python -m ensurepip",
+    "/opt/venv/bin/python -m pip install --upgrade pip",
+    "/opt/venv/bin/pip install -r requirements.txt",
+    "/opt/venv/bin/pip install gunicorn"  # Asegurar que Gunicorn se instala
 ]
 
 [start]
-cmd = "/opt/venv/bin/python --version && /opt/venv/bin/pip --version && /opt/venv/bin/pip list"
+cmd = "/opt/venv/bin/gunicorn FerreFac.wsgi:application --bind 0.0.0.0:8000"
