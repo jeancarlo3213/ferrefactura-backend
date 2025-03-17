@@ -14,7 +14,6 @@ cmds = [
     "/opt/venv/bin/python -m ensurepip",  # Asegurar pip
     "/opt/venv/bin/python -m pip install --upgrade pip",  # Actualizar pip
     "/opt/venv/bin/pip install -r requirements.txt"
-    "/opt/venv/bin/pip install gunicorn"
 ]
 
 [start]
