@@ -9,11 +9,11 @@ nixPkgs = [
 
 [phases.install]
 cmds = [
-    "python3 -m venv /opt/venv",  # Crea entorno virtual
-    "/opt/venv/bin/python -m ensurepip --default-pip",  # Instala pip
-    "/opt/venv/bin/python -m pip install --upgrade pip setuptools wheel",  # Asegura que pip esté actualizado
-    "/opt/venv/bin/pip install gunicorn",  # Instala Gunicorn manualmente
-    "/opt/venv/bin/pip install -r requirements.txt"  # Instala dependencias del proyecto
+    "python3 -m venv /opt/venv",  
+    "/opt/venv/bin/python -m ensurepip --default-pip",  
+    "/opt/venv/bin/python -m pip install --upgrade pip setuptools wheel",  
+    "/opt/venv/bin/pip install gunicorn",  
+    "/opt/venv/bin/pip install -r requirements.txt"  
 ]
 
 [start]
