@@ -30,6 +30,8 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 
 
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "web-production-2cef.up.railway.app").split(",")
+
 
 # Application definition
 
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework',
     'drf_yasg',
+    'gunicorn',
     'facturacion',
 ]
 CORS_ALLOW_ALL_ORIGINS = True 
@@ -154,5 +157,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_URL = "/static/"
 
+
+
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Habilita WhiteNoise para servir archivos estáticos correctamente en Railway
+INSTALLED_APPS.append("whitenoise.runserver_nostatic")  # Agregar al final de INSTALLED_APPS
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")  # Agregar después de SecurityMiddleware
