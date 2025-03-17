@@ -10,8 +10,9 @@ nixPkgs = [
 [phases.install]
 cmds = [
     "python3 -m venv /opt/venv",  # Crea el entorno virtual
-    "/opt/venv/bin/python -m pip install --upgrade pip",  # Usa pip con ruta absoluta
-    "/opt/venv/bin/pip install -r requirements.txt"  # Usa pip con ruta absoluta
+    "/opt/venv/bin/python -m ensurepip",  # Instala pip manualmente
+    "/opt/venv/bin/python -m pip install --upgrade pip setuptools wheel",  # Actualiza pip
+    "/opt/venv/bin/pip install -r requirements.txt"  # Instala dependencias
 ]
 
 [start]
