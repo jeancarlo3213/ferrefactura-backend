@@ -1,2 +1,19 @@
 [phases.setup]
-nixPkgs = ["unixODBC", "unixODBC.dev"]
+nixPkgs = [
+    "python3",
+    "postgresql_16",
+    "libmysqlclient",
+    "gcc",
+    "unixODBC",
+    "unixODBC.dev" # Esta línea soluciona el error de pyodbc
+]
+
+[phases.install]
+cmds = [
+    "python -m venv /opt/venv",
+    ". /opt/venv/bin/activate",
+    "pip install -r requirements.txt"
+]
+
+[start]
+cmd = "gunicorn FerreFac.wsgi --bind 0.0.0.0:8000"
