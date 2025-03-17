@@ -1,20 +1,21 @@
 [phases.setup]
 nixPkgs = [
-    "python310",  # Usa una versión específica de Python (3.10)
-    "pip",  # Asegura que pip esté instalado
+    "python310",
     "postgresql_16",
     "libmysqlclient",
     "gcc",
-    "unixODBC"
+    "unixODBC",
+    "unixODBC.dev"
 ]
 
 [phases.install]
 cmds = [
-    "python -m venv /opt/venv",  # Crea el entorno virtual en /opt/venv
-    ". /opt/venv/bin/activate",  # Activa el entorno virtual
-    "pip install --upgrade pip",  # Asegura la última versión de pip
-    "pip install -r requirements.txt"  # Instala dependencias
+    "python3 -m venv /opt/venv",  # Usa python3 en lugar de python
+    ". /opt/venv/bin/activate",
+    "/opt/venv/bin/python -m ensurepip",  # Asegura que pip esté disponible
+    "/opt/venv/bin/python -m pip install --upgrade pip",  # Actualiza pip
+    "/opt/venv/bin/pip install -r requirements.txt"
 ]
 
 [start]
-cmd = "gunicorn FerreFac.wsgi --bind 0.0.0.0:8000"
+cmd = "/opt/venv/bin/gunicorn FerreFac.wsgi --bind 0.0.0.0:8000"
