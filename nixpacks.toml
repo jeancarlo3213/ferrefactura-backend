@@ -4,8 +4,7 @@ nixPkgs = [
     "postgresql_16",
     "libmysqlclient",
     "gcc",
-    "unixODBC",
-    "unixODBC.dev" # Esta línea soluciona el error de pyodbc
+    "unixODBC"  # Eliminamos "unixODBC.dev"
 ]
 
 [phases.install]
