@@ -4,16 +4,15 @@ nixPkgs = [
     "postgresql_16",
     "libmysqlclient",
     "gcc",
-    "unixODBC",
-    "unixODBC.dev"
+    "unixODBC"  # Eliminamos "unixODBC.dev" porque no existe en nixPkgs
 ]
 
 [phases.install]
 cmds = [
-    "python3 -m venv /opt/venv",  # Usa python3 en lugar de python
+    "python3 -m venv /opt/venv",  # Crear entorno virtual
     ". /opt/venv/bin/activate",
-    "/opt/venv/bin/python -m ensurepip",  # Asegura que pip esté disponible
-    "/opt/venv/bin/python -m pip install --upgrade pip",  # Actualiza pip
+    "/opt/venv/bin/python -m ensurepip",  # Asegurar que pip esté disponible
+    "/opt/venv/bin/python -m pip install --upgrade pip",  # Actualizar pip
     "/opt/venv/bin/pip install -r requirements.txt"
 ]
 
