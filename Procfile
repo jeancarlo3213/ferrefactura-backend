@@ -1,1 +1,1 @@
-web: /opt/venv/bin/python manage.py runserver 0.0.0.0:8000
+web: /opt/venv/bin/gunicorn --workers=4 FerreFac.wsgi:application --bind 0.0.0.0:8000
