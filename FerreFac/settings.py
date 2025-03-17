@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework',
     'drf_yasg',
-    'gunicorn',
     'facturacion',
 ]
 CORS_ALLOW_ALL_ORIGINS = True 
@@ -158,7 +157,6 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_URL = "/static/"
 
 
 
