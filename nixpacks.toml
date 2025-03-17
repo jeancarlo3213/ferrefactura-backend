@@ -17,5 +17,4 @@ cmds = [
 ]
 
 [start]
-cmd = "/opt/venv/bin/python --version && /opt/venv/bin/pip --version"
-
+cmd = "/opt/venv/bin/python --version && /opt/venv/bin/pip --version && /opt/venv/bin/pip list"
