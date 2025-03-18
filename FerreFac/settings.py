@@ -30,7 +30,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "web-production-2cef.up.railway.app").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "web-production-2cef.up.railway.app,localhost,127.0.0.1").split(",")
 
 
 
