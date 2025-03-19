@@ -28,9 +28,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'una-clave-super-secreta')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 
-
-
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "web-production-2cef.up.railway.app,localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "ferrefactura.azurewebsites.net,127.0.0.1,localhost").split(",")
 
 
 
