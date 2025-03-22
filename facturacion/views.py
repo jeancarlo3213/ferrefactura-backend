@@ -259,7 +259,7 @@ def add_print_job(request):
 
 # Endpoint para obtener órdenes de impresión pendientes
 def get_pending_jobs(request):
-    jobs = PrintJob.objects.filter(printed=False)
+    jobs = PrintJob.objects.filter(printed=False).order_by("created_at")  # Solo las NO impresas
     return JsonResponse({"jobs": list(jobs.values())})
 
 # Endpoint para marcar una orden como impresa
@@ -268,10 +268,9 @@ def mark_as_printed(request, job_id):
     if request.method == "POST":
         try:
             job = PrintJob.objects.get(id=job_id)
-            job.printed = True
+            job.printed = True  # 🔹 Marcar como impresa
             job.save()
             return JsonResponse({"message": "Orden marcada como impresa"})
         except PrintJob.DoesNotExist:
             return JsonResponse({"error": "Orden no encontrada"}, status=404)
-
     return JsonResponse({"error": "Método no permitido"}, status=405)
