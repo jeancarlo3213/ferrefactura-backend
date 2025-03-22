@@ -8,6 +8,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import PrintJob
 # 🔹 IMPORTA todos tus Modelos
 from .models import (
     Usuario,
@@ -239,3 +243,35 @@ def obtener_ventas_por_dia(request):
         ventas_por_dia[dia] = float(venta['total_ventas'])
 
     return Response({"ventas_por_dia": ventas_por_dia})
+
+
+
+@csrf_exempt
+def add_print_job(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        text = data.get("text", "")
+
+        job = PrintJob.objects.create(text=text)
+        return JsonResponse({"message": "Orden de impresión guardada", "job_id": job.id})
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
+# Endpoint para obtener órdenes de impresión pendientes
+def get_pending_jobs(request):
+    jobs = PrintJob.objects.filter(printed=False)
+    return JsonResponse({"jobs": list(jobs.values())})
+
+# Endpoint para marcar una orden como impresa
+@csrf_exempt
+def mark_as_printed(request, job_id):
+    if request.method == "POST":
+        try:
+            job = PrintJob.objects.get(id=job_id)
+            job.printed = True
+            job.save()
+            return JsonResponse({"message": "Orden marcada como impresa"})
+        except PrintJob.DoesNotExist:
+            return JsonResponse({"error": "Orden no encontrada"}, status=404)
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)

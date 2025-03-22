@@ -4,6 +4,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+# Luego en la función:
+
 class Token(models.Model):
     key = models.CharField(max_length=40, primary_key=True)
     user = models.ForeignKey(
@@ -212,7 +215,8 @@ class CajaDiaria(models.Model):
         self.total_sin_deuda = self.total  # Sin impacto de deuda aún
         self.total_con_deuda = self.total  # Se puede modificar si hay relación con deudas
         super().save(*args, **kwargs)
-
+    objects = models.Manager()
+# �� Campos calculados  
     class Meta:
         db_table = 'CajaDiaria'
 
@@ -265,10 +269,25 @@ class PagoDeuda(models.Model):
     objects = models.Manager()
     class Meta:
         db_table = 'PagosDeudas'
-
+    objects = models.Manager()
     def __str__(self):
         # Evita error de Pylint “no 'deudor_id' member”.
         return (
             f"{self.deudor.nombre if self.deudor_id else 'Sin Nombre'} "
             f"- Pagó: {self.cantidad_pagada} Q"
         )
+
+
+class PrintJob(models.Model):
+    id = models.AutoField(primary_key=True)
+    text = models.TextField()
+    printed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+  
+    objects = models.Manager()  # Asegura que el modelo tenga un Manager
+    class Meta:
+        db_table = 'PrintJob'  # 📌 Nombre exacto de la tabla en SQL Server
+        managed = False  # 📌 Evita que Django intente administrar esta tabla con migraciones
+
+    def __str__(self):
+        return f"PrintJob #{self.id} - {str(self.text)[:30]}..."
