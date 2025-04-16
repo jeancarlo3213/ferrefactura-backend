@@ -1,6 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
+from .views import reporte_ganancias_producto
+from .views import reporte_ganancias_por_producto
+
+
 
 # 🔹 Importa las vistas y ViewSets
 from .views import (
@@ -50,4 +54,7 @@ urlpatterns = [
     path('add_print/', add_print_job),  # Para agregar una orden de impresión
     path('get_jobs/', get_pending_jobs),  # Para obtener las órdenes pendientes
     path('mark_printed/<int:job_id>/', mark_as_printed),  # Para marcar una orden como impresa
+    path('reporte-ganancias-producto/', reporte_ganancias_producto, name='reporte_ganancias_producto'),
+    path('reporte-ganancias-por-producto/', reporte_ganancias_por_producto, name='reporte_ganancias_por_producto'),
+
 ]

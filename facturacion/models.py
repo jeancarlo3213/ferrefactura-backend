@@ -51,6 +51,8 @@ class Usuario(models.Model):
 # =========================================================
 class Producto(models.Model):
     nombre = models.CharField(max_length=255, unique=True)
+
+    # Precio de venta por unidad general
     precio = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -58,25 +60,49 @@ class Producto(models.Model):
         blank=False,
         default=0
     )
+
+    # Precio de venta por quintal (si aplica)
     precio_quintal = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         null=True,
         blank=True
     )
+
+    # Precio de venta por unidad específica (opcional si difiere del general)
     precio_unidad = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         null=True,
         blank=True
     )
+
+    # 🔹 NUEVOS CAMPOS: Precio de compra
+    precio_compra_unidad = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+
+    precio_compra_quintal = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+
+    # Cuántas unidades forman un quintal
     unidades_por_quintal = models.IntegerField(null=True, blank=True)
+
     categoria = models.CharField(
         max_length=100,
         null=True,
         blank=True
     )
+
     stock = models.IntegerField(default=0, null=True, blank=True)
+
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     objects = models.Manager()

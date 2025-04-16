@@ -274,3 +274,86 @@ def mark_as_printed(request, job_id):
         except PrintJob.DoesNotExist:
             return JsonResponse({"error": "Orden no encontrada"}, status=404)
     return JsonResponse({"error": "Método no permitido"}, status=405)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def reporte_ganancias_producto(request):
+    """
+    Devuelve la ganancia total por producto (unidad/quintal), incluyendo el margen porcentual.
+    """
+    resultados = []
+
+    detalles = FacturaDetalle.objects.select_related('producto')
+
+    for detalle in detalles:
+        producto = detalle.producto
+        cantidad = detalle.cantidad
+        tipo = detalle.tipo_venta
+
+        if tipo == "Unidad" and producto.precio_compra_unidad is not None:
+            ganancia_unitaria = float(producto.precio) - float(producto.precio_compra_unidad)
+            ganancia_total = ganancia_unitaria * cantidad
+            margen = (ganancia_unitaria / float(producto.precio_compra_unidad)) * 100
+
+        elif tipo == "Quintal" and producto.precio_compra_quintal is not None:
+            ganancia_quintal = float(producto.precio_quintal) - float(producto.precio_compra_quintal)
+            ganancia_total = ganancia_quintal * cantidad
+            margen = (ganancia_quintal / float(producto.precio_compra_quintal)) * 100
+
+        else:
+            ganancia_total = None
+            margen = None
+
+        resultados.append({
+            "producto": producto.nombre,
+            "tipo_venta": tipo,
+            "cantidad_vendida": cantidad,
+            "ganancia_total": round(ganancia_total, 2) if ganancia_total is not None else "Sin datos",
+            "margen_porcentual": round(margen, 2) if margen is not None else "Sin datos"
+        })
+
+    return Response(resultados)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def reporte_ganancias_por_producto(request):
+    """
+    Devuelve un resumen agrupado por producto con su ganancia total.
+    """
+    resultados = {}
+
+    detalles = FacturaDetalle.objects.select_related('producto')
+
+    for detalle in detalles:
+        producto = detalle.producto
+        tipo = detalle.tipo_venta
+        key = f"{producto.id}_{tipo}"
+
+        if key not in resultados:
+            resultados[key] = {
+                "producto": producto.nombre,
+                "tipo_venta": tipo,
+                "cantidad_total": 0,
+                "ganancia_total": 0.0,
+                "margen_porcentual": None
+            }
+
+        resultados[key]["cantidad_total"] += detalle.cantidad
+
+        if tipo == "Unidad" and producto.precio_compra_unidad is not None:
+            ganancia_unitaria = float(producto.precio) - float(producto.precio_compra_unidad)
+            resultados[key]["ganancia_total"] += ganancia_unitaria * detalle.cantidad
+            resultados[key]["margen_porcentual"] = round((ganancia_unitaria / float(producto.precio_compra_unidad)) * 100, 2)
+
+        elif tipo == "Quintal" and producto.precio_compra_quintal is not None:
+            ganancia_quintal = float(producto.precio_quintal) - float(producto.precio_compra_quintal)
+            resultados[key]["ganancia_total"] += ganancia_quintal * detalle.cantidad
+            resultados[key]["margen_porcentual"] = round((ganancia_quintal / float(producto.precio_compra_quintal)) * 100, 2)
+
+        else:
+            resultados[key]["ganancia_total"] = "Sin datos"
+            resultados[key]["margen_porcentual"] = "Sin datos"
+
+    return Response(list(resultados.values()))
