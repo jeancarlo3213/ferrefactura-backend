@@ -27,6 +27,8 @@ from .views import (
     add_print_job,
     get_pending_jobs,
     mark_as_printed,
+    guardar_noviazgo,
+    obtener_noviazgo,
 )
 
 # 🔹 Configurar router para los ViewSets
@@ -51,10 +53,14 @@ urlpatterns = [
     path('ventas-anuales/', obtener_ventas_anuales, name='ventas_anuales'),
     path('ventas-diarias/', obtener_ventas_por_dia, name='ventas_diarias'),
     path('api-token-auth/', obtain_auth_token, name='api-token-auth'),
-    path('add_print/', add_print_job),  # Para agregar una orden de impresión
-    path('get_jobs/', get_pending_jobs),  # Para obtener las órdenes pendientes
-    path('mark_printed/<int:job_id>/', mark_as_printed),  # Para marcar una orden como impresa
+    path('add_print/', add_print_job),  
+    path('get_jobs/', get_pending_jobs),  
+    path('mark_printed/<int:job_id>/', mark_as_printed),  
     path('reporte-ganancias-producto/', reporte_ganancias_producto, name='reporte_ganancias_producto'),
     path('reporte-ganancias-por-producto/', reporte_ganancias_por_producto, name='reporte_ganancias_por_producto'),
+    path('guardar-noviazgo/', guardar_noviazgo, name='guardar_noviazgo'),
+    path('obtener-noviazgo/', obtener_noviazgo, name='obtener_noviazgo'),
+
+
 
 ]

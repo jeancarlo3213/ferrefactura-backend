@@ -7,6 +7,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -314,7 +315,34 @@ def reporte_ganancias_producto(request):
         })
 
     return Response(resultados)
+@api_view(['GET'])
+@permission_classes([AllowAny])  # O usa IsAuthenticated si estás usando login
+def obtener_noviazgo(request):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT TOP 1 * FROM Noviazgo ORDER BY fecha_aceptacion DESC")
+        row = cursor.fetchone()
+        if row:
+            return Response({
+                "id": row[0],
+                "nombre": row[1],
+                "fecha_aceptacion": row[2]
+            })
+        else:
+            return Response({"mensaje": "Aún no hay registro de noviazgo."})
 
+@csrf_exempt
+@api_view(['POST'])
+def guardar_noviazgo(request):
+    data = json.loads(request.body)
+    nombre = data.get("nombre", "Anonimo")
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "INSERT INTO Noviazgo (nombre, fecha_aceptacion) VALUES (%s, GETDATE())",
+            [nombre]
+        )
+    
+    return Response({"mensaje": "Fecha guardada exitosamente 💖"})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
