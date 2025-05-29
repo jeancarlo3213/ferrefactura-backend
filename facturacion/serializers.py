@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Usuario, Producto, Factura, FacturaDetalle, PrecioEspecial, Descuento, CajaDiaria, Deudor, RegistroDeuda, PagoDeuda
-
-
+from .models import Noviazgo
 # ===========================
 #   SERIALIZER: USUARIOS
 # ===========================
@@ -10,13 +9,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = '__all__'
 
-    def validate_usuario(self, value):
-        if not value.strip():
-            raise serializers.ValidationError("El nombre de usuario no puede estar vacío.")
-        return value
-
-
-# ===========================
 #   SERIALIZER: PRODUCTOS
 # ===========================
 class ProductoSerializer(serializers.ModelSerializer):
@@ -179,3 +171,17 @@ class PagoDeudaSerializer(serializers.ModelSerializer):
         if value < 0:
             raise serializers.ValidationError("El pago no puede ser negativo.")
         return value
+    
+
+    def validate_usuario(self, value):
+        if not value.strip():
+            raise serializers.ValidationError("El nombre de usuario no puede estar vacío.")
+        return value
+
+
+# ===========================
+
+class NoviazgoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Noviazgo
+        fields = ['id', 'nombre', 'fecha_aceptacion']

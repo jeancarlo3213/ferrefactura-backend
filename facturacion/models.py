@@ -23,6 +23,16 @@ class Token(models.Model):
     def __str__(self):
         return str(self.key)
 
+# facturacion/models.py
+class Noviazgo(models.Model):
+    nombre = models.CharField(max_length=100)
+    fecha_aceptacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'Noviazgo'
+
+    def __str__(self):
+        return f'{self.nombre} @ {self.fecha_aceptacion}'
 # =========================================================
 #                   MODELO: USUARIOS
 # =========================================================
@@ -317,3 +327,4 @@ class PrintJob(models.Model):
 
     def __str__(self):
         return f"PrintJob #{self.id} - {str(self.text)[:30]}..."
+
